@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shared-volume-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: volume-deployment
+  template:
+    metadata:
+      labels:
+        app: volume-deployment
+    spec:
+      containers:
+      - name: writer
+        image: busybox
+        command: ["/bin/sh","-c","Hello from writer pod"]
+        volumeMounts :
+        - name : shared-data
+         mountPath : /data
+      - name : reader
+        image : busybox
+        command: ["/bin/sh","-c","Hello from writer pod"]
+        volumeMounts :
+        - name : shared-data
+         mountPath : /data
